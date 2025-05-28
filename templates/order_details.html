@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Details</title>
+</head>
+<body>
+    <h2>Order Details for Order #{{ order.order_id }}</h2>
+    <p>Customer: {{ order.customer_name }}</p>
+    <p>Date: {{ order.order_date }}</p>
+    <p>Total Amount: ${{ "%.2f"|format(order.total_amount) }}</p>
+
+    <table border="1">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price Each</th>
+            <th>Subtotal</th>
+        </tr>
+        {% for item in order_items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ "%.2f"|format(item.price) }}</td>
+            <td>${{ "%.2f"|format(item.subtotal) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('view_orders') }}">Back to Orders</a>
+</body>
+</html>

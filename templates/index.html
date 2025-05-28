@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Retail Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Retail Store Management System</h1>
+    <p>This is your home page.</p>
+
+    <nav>
+        <a href="{{ url_for('view_products') }}">Products</a> |
+        <a href="{{ url_for('new_order') }}">New Order</a> |
+        <a href="{{ url_for('view_customers') }}">Customers</a> |
+        <a href="{{ url_for('view_categories') }}">Categories</a> |
+        <a href="{{ url_for('reports') }}">Reports</a> |
+        {% if session.get('role') == 'admin' %}
+            <a href="{{ url_for('view_employees') }}">Employees</a> |
+        {% endif %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+</body>
+</html>
+
+  

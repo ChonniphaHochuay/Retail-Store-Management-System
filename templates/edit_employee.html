@@ -1,0 +1,12 @@
+<h1>Edit Employee</h1>
+<form method="POST">
+    <label>Name:</label> <input type="text" name="name" value="{{ employee.name }}" required><br>
+    <label>Email:</label> <input type="email" name="email" value="{{ employee.email }}" required><br>
+    <label>Role:</label>
+    <select name="role">
+        <option value="admin" {% if employee.role == 'admin' %}selected{% endif %}>Admin</option>
+        <option value="staff" {% if employee.role == 'staff' %}selected{% endif %}>Staff</option>
+    </select><br>
+    <input type="submit" value="Update Employee">
+</form>
+<a href="{{ url_for('view_employees') }}">Back</a>

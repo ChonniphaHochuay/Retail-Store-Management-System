@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Order</title>
+</head>
+<body>
+    <h2>Create New Order</h2>
+    <form method="POST">
+        <label>Customer:</label>
+        <select name="customer_id" required>
+            {% for customer in customers %}
+            <option value="{{ customer.customer_id }}">{{ customer.name }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        
+        <div id="products-container">
+            <div class="product-row">
+                <label>Product:</label>
+                <select name="product_id" required>
+                    {% for product in products %}
+                    <option value="{{ product.product_id }}">{{ product.name }} (Stock: {{ product.quantity }})</option>
+                    {% endfor %}
+                </select>
+                <label>Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1" required>
+            </div>
+        </div>
+        
+        <button type="button" onclick="addProductRow()">Add Another Product</button>
+        <br><br>
+        <input type="submit" value="Place Order">
+    </form>
+
+    <script>
+        function addProductRow() {
+            const container = document.getElementById('products-container');
+            const row = document.querySelector('.product-row');
+            const newRow = row.cloneNode(true);
+            container.appendChild(newRow);
+        }
+    </script>
+</body>
+</html>

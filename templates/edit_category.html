@@ -1,0 +1,7 @@
+<h1>Edit Category</h1>
+<form method="POST">
+    <label>Name:</label>
+    <input type="text" name="name" value="{{ category.name }}" required><br>
+    <input type="submit" value="Update Category">
+</form>
+<a href="{{ url_for('view_categories') }}">Back</a>

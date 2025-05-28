@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orders</title>
+</head>
+<body>
+    <h2>Orders List</h2>
+    <table border="1">
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Total Amount</th>
+            <th>Details</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.order_id }}</td>
+            <td>{{ order.customer_name }}</td>
+            <td>{{ order.order_date }}</td>
+            <td>${{ "%.2f"|format(order.total_amount) }}</td>
+            <td><a href="{{ url_for('order_details', order_id=order.order_id) }}">View</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('new_order') }}">Create New Order</a>
+</body>
+</html>

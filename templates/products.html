@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .product-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+        .product-card img {
+            max-height: 100px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .product-card h4 {
+            margin: 5px 0;
+        }
+        .actions {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product List</h1>
+    <a href="{{ url_for('add_product') }}">+ Add Product</a>
+    <div class="grid-container">
+        {% for product in products %}
+        <div class="product-card">
+            {% if product.image_path %}
+                <img src="/{{ product.image_path }}" alt="{{ product.name }}">
+            {% else %}
+                <div style="height: 100px; background-color: #ddd;">No Image</div>
+            {% endif %}
+            <h4>{{ product.name }}</h4>
+            <p>{{ product.description }}</p>
+            <strong>{{ product.price }} ฿</strong>
+            <div class="actions">
+                <a href="{{ url_for('edit_product', product_id=product.product_id) }}">Edit</a> |
+                <a href="{{ url_for('delete_product', product_id=product.product_id) }}">Delete</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

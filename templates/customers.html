@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>Customers</title></head>
+<body>
+    <h1>Customers</h1>
+    <a href="{{ url_for('add_customer') }}">+ Add Customer</a>
+    <table border="1">
+        <tr><th>Name</th><th>Email</th><th>Phone</th><th>Actions</th></tr>
+        {% for customer in customers %}
+        <tr>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.phone }}</td>
+            <td>
+                <a href="{{ url_for('edit_customer', customer_id=customer.customer_id) }}">Edit</a> |
+                <a href="{{ url_for('delete_customer', customer_id=customer.customer_id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('home') }}">Back</a>
+</body>
+</html>
