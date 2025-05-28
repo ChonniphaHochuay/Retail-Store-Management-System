@@ -13,11 +13,12 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 # Function to connect to MySQL
 def get_db_connection():
-    connection = mysql.connector.connect(
-        host="localhost",
-        user="retail_user",        # change if you use a different user
-        password="Retail@1234",    # use your MySQL password
-        database="retail_db"       # your database name
+    return mysql.connector.connect(
+        host=os.environ.get("MYSQLHOST"),
+        user=os.environ.get("MYSQLUSER"),
+        password=os.environ.get("MYSQLPASSWORD"),
+        database=os.environ.get("MYSQLDATABASE"),
+        port=int(os.environ.get("MYSQLPORT", 3306))
     )
     return connection
 
