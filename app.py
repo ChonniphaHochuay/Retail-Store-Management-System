@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
 import os
 from werkzeug.utils import secure_filename
+from datetime import datetime as dt
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # Needed to use sessions securely
@@ -13,12 +14,12 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 # Function to connect to MySQL
 def get_db_connection():
-    return mysql.connector.connect(
-        host=os.environ.get("MYSQLHOST"),
-        user=os.environ.get("MYSQLUSER"),
-        password=os.environ.get("MYSQLPASSWORD"),
-        database=os.environ.get("MYSQLDATABASE"),
-        port=int(os.environ.get("MYSQLPORT"))
+    connection = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="chonnipha2546",
+        database="retail_db",
+        port=3306
     )
     return connection
 
@@ -213,6 +214,28 @@ def delete_product(product_id):
     flash("Product deleted successfully!")
     return redirect(url_for('view_products'))
 
+@app.route('/category/<int:category_id>/products')
+def view_products_by_category(category_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT name FROM Categories WHERE category_id = %s", (category_id,))
+    category = cursor.fetchone()
+
+    if not category:
+        flash("Category not found.")
+        return redirect(url_for('view_categories'))
+
+    cursor.execute("""
+        SELECT * FROM Products
+        WHERE category_id = %s
+    """, (category_id,))
+    products = cursor.fetchall()
+
+    conn.close()
+    return render_template('products.html', products=products, category_name=category['name'])
+
+
 @app.route('/order/new', methods=['GET', 'POST'])
 def new_order():
     conn = get_db_connection()
@@ -222,17 +245,20 @@ def new_order():
     cursor.execute("SELECT * FROM Customers")
     customers = cursor.fetchall()
     
-    cursor.execute("SELECT * FROM Products WHERE quantity > 0")
+    cursor.execute("SELECT product_id, name, price, image FROM Products WHERE quantity > 0")
     products = cursor.fetchall()
     
     if request.method == 'POST':
         customer_id = request.form['customer_id']
+        order_date = request.form['order_date']
         product_ids = request.form.getlist('product_id')   # list of product IDs
         quantities = request.form.getlist('quantity')      # list of quantities
         
+        if not product_ids or not quantities:
+            flash("Please add at least one product before submitting the order.")
+            return redirect(url_for('new_order'))
         # Insert a new order
-        from datetime import datetime
-        order_date = datetime.now()
+        order_date = request.form['order_date']
         
         # Calculate total_amount by summing (price * quantity)
         total_amount = 0
@@ -244,6 +270,9 @@ def new_order():
             # Get product price
             cursor.execute("SELECT price, quantity FROM Products WHERE product_id = %s", (pid,))
             prod = cursor.fetchone()
+            if not prod:
+                flash(f"Product with ID {pid} not found.")
+                return redirect(url_for('new_order'))
             if qty > prod['quantity']:
                 flash(f"Not enough stock for product {pid}")
                 return redirect(url_for('new_order'))
@@ -271,7 +300,7 @@ def new_order():
         return redirect(url_for('view_orders'))
     
     conn.close()
-    return render_template('new_order.html', customers=customers, products=products)
+    return render_template('new_order.html', customers=customers, products=products, current_date=dt.now().strftime('%Y-%m-%d'))
 
 @app.route('/orders')
 def view_orders():
@@ -489,6 +518,12 @@ def delete_employee(employee_id):
     flash("Employee deleted.")
     return redirect(url_for('view_employees'))
 
+@app.template_filter('datetimeformat')
+def datetimeformat(value, format='%Y-%m-%d'):
+    return value.strftime(format)
+
+from datetime import datetime as dt
+from flask import render_template
 
 @app.route('/reports')
 @login_required
@@ -496,43 +531,55 @@ def reports():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    # Total Sales by Date
+    # Daily Sales
     cursor.execute("""
         SELECT DATE(order_date) AS date, SUM(total_amount) AS total_sales
         FROM Orders
         GROUP BY DATE(order_date)
-        ORDER BY date DESC
-        LIMIT 10;
+        ORDER BY DATE(order_date) DESC
+        LIMIT 10
     """)
     sales_by_date = cursor.fetchall()
 
-    # Best-selling Products
+    for row in sales_by_date:
+        row['date'] = dt.strptime(str(row['date']), '%Y-%m-%d')
+
+    for i in range(len(sales_by_date)):
+        if i < len(sales_by_date) - 1:
+            today = sales_by_date[i]['total_sales']
+            prev = sales_by_date[i + 1]['total_sales']
+            row_change = 0.0 if prev == 0 else ((today - prev) / prev) * 100
+            sales_by_date[i]['change'] = round(row_change, 2)
+        else:
+            sales_by_date[i]['change'] = 0.0
+
+    # Top Products
     cursor.execute("""
-        SELECT p.name, SUM(od.quantity) AS total_sold
+        SELECT p.name, SUM(od.quantity) AS total_sold,
+               SUM(od.quantity * od.price) AS revenue,
+               COALESCE(c.category_name, 'Uncategorized') AS category
         FROM OrderDetails od
         JOIN Products p ON od.product_id = p.product_id
+        LEFT JOIN productcategories c ON p.category_id = c.category_id
         GROUP BY od.product_id
         ORDER BY total_sold DESC
-        LIMIT 10;
+        LIMIT 10
     """)
     best_sellers = cursor.fetchall()
 
-    # Low Stock Products
+    # Low Stock
     cursor.execute("""
-        SELECT name, quantity
+        SELECT name, quantity, 10 AS reorder_level
         FROM Products
         WHERE quantity < 10
-        ORDER BY quantity ASC;
     """)
     low_stock = cursor.fetchall()
 
     conn.close()
-
-    return render_template('reports.html',
+    return render_template("reports.html",
                            sales_by_date=sales_by_date,
                            best_sellers=best_sellers,
                            low_stock=low_stock)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5006)
-

@@ -1,62 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Reports - Retail Store</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Retail Reports Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .card { border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .critical { background-color: #fff3f3; }
+    .low { background-color: #fff8e6; }
+    .sales-up { color: #28a745; }
+    .sales-down { color: #dc3545; }
+    .badge-pill { border-radius: 10rem; padding: 0.35em 0.65em; }
+  </style>
 </head>
 <body>
-    <h1>Reports Dashboard</h1>
-    <nav>
-        <a href="{{ url_for('home') }}">Home</a> |
-        <a href="{{ url_for('view_products') }}">Products</a> |
-        <a href="{{ url_for('new_order') }}">New Order</a> |
-        <a href="{{ url_for('view_customers') }}">Customers</a> |
-        <a href="{{ url_for('view_categories') }}">Categories</a> |
-        <a href="{{ url_for('view_employees') }}">Employees</a> |
-        <a href="{{ url_for('logout') }}">Logout</a>
-    </nav>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2">Retail Reports Dashboard</h1>
+    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">Logout</a>
+  </div>
 
-    <h2>Total Sales by Date (Last 10 Days)</h2>
-    <table border="1" cellpadding="5" cellspacing="0">
-        <tr>
+  <!-- Sales Summary -->
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Daily Sales (Last 10 Days)</h5>
+    </div>
+    <div class="card-body table-responsive">
+      <table class="table table-hover">
+        <thead class="table-light">
+          <tr>
             <th>Date</th>
-            <th>Total Sales</th>
-        </tr>
-        {% for row in sales_by_date %}
-        <tr>
-            <td>{{ row.date }}</td>
-            <td>${{ "%.2f"|format(row.total_sales) }}</td>
-        </tr>
+            <th>Total Sales (฿)</th>
+            <th>Day of Week</th>
+            <th>Trend</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for day in sales_by_date %}
+          <tr>
+            <td>{{ day.date.strftime('%Y-%m-%d') }}</td>
+            <td>฿{{ "{:,.2f}".format(day.total_sales) }}</td>
+            <td>{{ day.date.strftime('%A') }}</td>
+            <td>
+              {% if day.change > 0 %}
+                <span class="sales-up">↑ {{ "{:.1f}%".format(day.change) }}</span>
+              {% elif day.change < 0 %}
+                <span class="sales-down">↓ {{ "{:.1f}%".format(day.change|abs) }}</span>
+              {% else %}
+                <span>→</span>
+              {% endif %}
+            </td>
+          </tr>
         {% endfor %}
-    </table>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    <h2>Best-selling Products (Top 10)</h2>
-    <table border="1" cellpadding="5" cellspacing="0">
-        <tr>
-            <th>Product Name</th>
-            <th>Total Sold</th>
-        </tr>
+  <!-- Best Sellers -->
+  <div class="card mb-4">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Top Selling Products</h5>
+    </div>
+    <div class="card-body table-responsive">
+      <table class="table table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Product</th>
+            <th>Sold</th>
+            <th>Revenue</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody>
         {% for product in best_sellers %}
-        <tr>
+          <tr>
+            <td>{{ loop.index }}</td>
             <td>{{ product.name }}</td>
             <td>{{ product.total_sold }}</td>
-        </tr>
+            <td>฿{{ "{:,.2f}".format(product.revenue) }}</td>
+            <td>{{ product.category }}</td>
+          </tr>
         {% endfor %}
-    </table>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    <h2>Low Stock Products (Quantity &lt; 10)</h2>
-    <table border="1" cellpadding="5" cellspacing="0">
-        <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
-        </tr>
-        {% for product in low_stock %}
-        <tr>
-            <td>{{ product.name }}</td>
-            <td>{{ product.quantity }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
+  <!-- Low Stock -->
+  <div class="card">
+    <div class="card-header bg-warning text-dark">
+      <h5 class="mb-0">Low Stock Products</h5>
+    </div>
+    <div class="card-body">
+      {% if low_stock %}
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Product</th>
+              <th>Stock</th>
+              <th>Reorder Level</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for product in low_stock %}
+            <tr class="{{ 'critical' if product.quantity < 5 else 'low' }}">
+              <td>{{ product.name }}</td>
+              <td>{{ product.quantity }}</td>
+              <td>{{ product.reorder_level }}</td>
+              <td>
+                {% if product.quantity < 5 %}
+                  <span class="badge bg-danger badge-pill">Critical</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark badge-pill">Low</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="alert alert-success mb-0">All products have enough stock.</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
 </body>
 </html>

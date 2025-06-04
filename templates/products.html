@@ -51,5 +51,14 @@
         </div>
         {% endfor %}
     </div>
+    <h2>
+        {% if category_name %}
+            Products in "{{ category_name }}"
+            <a href="{{ url_for('view_products') }}" class="btn btn-secondary btn-sm mb-3">← Back to All Products</a>
+        {% else %}
+            All Products
+        {% endif %}
+    </h2>
+
 </body>
 </html>

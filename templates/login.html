@@ -1,29 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <title>Login | Retail POS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h2>Login</h2>
-    <form method="POST">
-        <label>Email:</label><br>
-        <input type="email" name="email" required><br>
+    <div class="login-container">
+        <div class="login-left">
+            <h1>Retail Store</h1>
+            <p>Management System</p>
+            
+            <!-- 🖼️ Add your shop image below the title -->
+            <img src="{{ url_for('static', filename='images/shop-icon.png') }}" alt="Shop Icon" class="shop-image">
+            
+            <a href="{{ url_for('register') }}">Register</a>
+        </div>
+        <div class="login-right">
+            <h2>Login Account</h2>
+            <form method="POST" action="{{ url_for('login') }}">
+                <label for="email">Email</label>
+                <input type="email" name="email" required>
 
-        <label>Password:</label><br>
-        <input type="password" name="password" required><br><br>
+                <label for="password">Password</label>
+                <input type="password" name="password" required>
 
-        <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
-
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+                <a href="#">Forgot Password?</a>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
