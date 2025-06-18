@@ -96,7 +96,7 @@
               <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="No image">
               {% endif %}
               <div class="product-name">{{ product.name }}</div>
-              <div class="product-price">{{ product.price }} ฿</div>
+              <div class="product-price">{{ product.price }} ¥</div>
               <button type="button" class="btn btn-add w-100"
                       onclick="addToCart('{{ product.name }}', '{{ product.price }}', '{{ product.product_id }}')">
                 Add
@@ -112,7 +112,7 @@
           <h5>Order Summary</h5>
           <ul class="list-group mb-3" id="order-list"></ul>
           <div id="hidden-fields"></div>
-          <h6>Total: <span id="total-price">0.00</span> ฿</h6>
+          <h6>Total: <span id="total-price">0.00</span> ¥</h6>
           <button type="submit" class="btn btn-success mt-3 w-100">Submit Order</button>
         </div>
       </div>
@@ -133,7 +133,7 @@
     item.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
     item.innerHTML = `
       <span class="flex-grow-1">${name}</span>
-      <span class="text-end" style="width: 80px;">${price.toFixed(2)} ฿</span>
+      <span class="text-end" style="width: 80px;">${price.toFixed(2)} ¥</span>
       <button class="btn btn-danger btn-sm ms-2" onclick="removeItem(this, ${price})">&times;</button>
     `;
     list.appendChild(item);

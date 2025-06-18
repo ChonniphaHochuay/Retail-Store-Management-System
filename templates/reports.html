@@ -32,7 +32,7 @@
         <thead class="table-light">
           <tr>
             <th>Date</th>
-            <th>Total Sales (฿)</th>
+            <th>Total Sales (¥)</th>
             <th>Day of Week</th>
             <th>Trend</th>
           </tr>
@@ -41,7 +41,7 @@
         {% for day in sales_by_date %}
           <tr>
             <td>{{ day.date.strftime('%Y-%m-%d') }}</td>
-            <td>฿{{ "{:,.2f}".format(day.total_sales) }}</td>
+            <td>¥{{ "{:,.2f}".format(day.total_sales) }}</td>
             <td>{{ day.date.strftime('%A') }}</td>
             <td>
               {% if day.change > 0 %}
@@ -81,7 +81,7 @@
             <td>{{ loop.index }}</td>
             <td>{{ product.name }}</td>
             <td>{{ product.total_sold }}</td>
-            <td>฿{{ "{:,.2f}".format(product.revenue) }}</td>
+            <td>¥{{ "{:,.2f}".format(product.revenue) }}</td>
             <td>{{ product.category }}</td>
           </tr>
         {% endfor %}

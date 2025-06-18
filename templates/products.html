@@ -176,11 +176,7 @@
     <div class="grid-container">
         {% for product in products %}
         <div class="product-card">
-            {% if product.image_path %}
-                <img src="{{ url_for('static', filename='uploads/' + product.image_path) }}" alt="{{ product.name }}">
-            {% else %}
-                <div style="height: 180px; background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #fff;">No Image</div>
-            {% endif %}
+
             <h4>{{ product.name }}</h4>
             <p>{{ product.description }}</p >
             <strong>{{ product.price }} ¥</strong>

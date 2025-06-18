@@ -5,11 +5,11 @@ import os
 from werkzeug.utils import secure_filename
 from datetime import datetime as dt
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.secret_key = 'supersecretkey'  # Needed to use sessions securely
 
 UPLOAD_FOLDER = 'static/uploads'
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path,'static/uploads')
 
 
 # Function to connect to MySQL
@@ -144,7 +144,7 @@ def add_product():
         if image and image.filename != '':
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            image_path = filename
+            image_path = f'static/uploads/{filename}'
         else:
             image_path = None
 
