@@ -113,15 +113,22 @@ def home():
 
 @app.route('/products')
 def view_products():
+    search_query = request.args.get('search', '')
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Products")
+
+    if search_query:
+        cursor.execute("SELECT * FROM Products WHERE name LIKE %s", ('%' + search_query + '%',))
+    else:
+        cursor.execute("SELECT * FROM Products")
+
     products = cursor.fetchall()
     cursor.close()
     conn.close()
     return render_template('products.html', products=products)
 
 @app.route('/product/add', methods=['GET', 'POST'])
+@admin_required
 def add_product():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -159,9 +166,11 @@ def add_product():
     return render_template('add_product.html', categories=categories)
 
 @app.route('/product/edit/<int:product_id>', methods=['GET', 'POST'])
+@admin_required
 def edit_product(product_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
+
     if request.method == 'POST':
         name = request.form['name']
         description = request.form['description']
@@ -169,25 +178,26 @@ def edit_product(product_id):
         quantity = request.form['quantity']
         category_id = request.form['category_id']
 
+        image_path = request.form.get('existing_image')
+
         image = request.files.get('image')
-        image_path = None
         if image and image.filename:
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             image_path = f'static/uploads/{filename}'
-        if image_path:
+        else:
+            image_path = request.form.get('existing_image')
+        
             cursor.execute("""
                 UPDATE Products 
                 SET name=%s, description=%s, price=%s, quantity=%s, category_id=%s, image_path=%s 
                 WHERE product_id=%s
             """, (name, description, price, quantity, category_id, image_path, product_id))
-        else:
-            cursor.execute("""
-                UPDATE Products SET name=%s, description=%s, price=%s, quantity=%s, category_id=%s WHERE product_id=%s
-                """, (name, description, price, quantity, category_id, product_id))
+        
         conn.commit()
         cursor.close()
         conn.close()
+
         flash("Product updated successfully!")
         return redirect(url_for('view_products'))
 
@@ -201,9 +211,11 @@ def edit_product(product_id):
     if product is None:
         flash("Product not found!")
         return redirect(url_for('view_products'))
+    
     return render_template('edit_product.html', product=product, categories=categories)
 
 @app.route('/product/delete/<int:product_id>')
+@admin_required
 def delete_product(product_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -340,11 +352,15 @@ def order_details(order_id):
     conn.close()
     return render_template('order_details.html', order=order, order_items=order_items)
 
-@app.route('/customers')
+@app.route('/customers', methods=['GET'])
 def view_customers():
+    search_query = request.args.get('search', '')
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Customers")
+    if search_query:
+        cursor.execute("SELECT * FROM Customers WHERE name LIKE %s OR email LIKE %s OR phone LIKE %s", ('%' + search_query + '%', '%' + search_query + '%', '%' + search_query + '%'))
+    else:
+        cursor.execute("SELECT * FROM Customers")
     customers = cursor.fetchall()
     conn.close()
     return render_template('customers.html', customers=customers)

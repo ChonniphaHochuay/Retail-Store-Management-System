@@ -1,18 +1,116 @@
-<h1>Employee Management</h1>
-<a href="{{ url_for('add_employee') }}">+ Add Employee</a>
-<table border="1">
-    <tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Actions</th></tr>
-    {% for emp in employees %}
-    <tr>
-        <td>{{ emp.employee_id }}</td>
-        <td>{{ emp.name }}</td>
-        <td>{{ emp.email }}</td>
-        <td>{{ emp.role }}</td>
-        <td>
-            <a href="{{ url_for('edit_employee', employee_id=emp.employee_id) }}">Edit</a> |
-            <a href="{{ url_for('delete_employee', employee_id=emp.employee_id) }}">Delete</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-<a href="{{ url_for('home') }}">Back</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #34495e;
+            margin-bottom: 40px;
+        }
+
+        .employee-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .employee-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .employee-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .employee-card .icon {
+            font-size: 50px;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .employee-card h3 {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .employee-card p {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .employee-card .btn {
+            text-decoration: none;
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .employee-card .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            color: #34495e;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: #bdc3c7;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Employee Management</h1>
+
+    <div class="employee-container">
+        {% for employee in employees %}
+        <div class="employee-card">
+            <div class="icon">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <h3>{{ employee.name }}</h3>
+            <p><strong>Email:</strong> {{ employee.email }}</p >
+            <p><strong>Role:</strong> {{ employee.role }}</p >
+            <a href=" 'edit_employee', employee_id=employee.employee_id) }}" class="btn">Edit</a >
+            <a href="{{ url_for('delete_employee', employee_id=employee.employee_id) }}" class="btn">Delete</a >
+        </div>
+        {% endfor %}
+    </div>
+
+    <a href="{{ url_for('home') }}" class="back-btn">Back</a >
+
+</body>
+</html>
+

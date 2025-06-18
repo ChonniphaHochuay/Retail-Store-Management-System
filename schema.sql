@@ -24,12 +24,6 @@ CREATE TABLE IF NOT EXISTS Employees (
     password VARCHAR(255)
 );
 
--- 4. Suppliers
-CREATE TABLE IF NOT EXISTS Suppliers (
-    supplier_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    contact_info TEXT
-);
 
 -- 5. Products
 CREATE TABLE IF NOT EXISTS Products (
@@ -62,12 +56,3 @@ CREATE TABLE IF NOT EXISTS OrderDetails (
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
--- 8. ProductSuppliers
-CREATE TABLE IF NOT EXISTS ProductSuppliers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT,
-    supplier_id INT,
-    supply_price DECIMAL(10, 2),
-    FOREIGN KEY (product_id) REFERENCES Products(product_id),
-    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)
-);
