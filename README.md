@@ -98,30 +98,30 @@ retail_store_project/
 └── screenshot/
 
 **Login Page**  
-![Login Page](screenshots/login.png)
+![Login Page](screenshot/login.png)
 
 **Home Page**  
-![Home Page](screenshots/homepage.png)
+![Home Page](screenshot/homepage.png)
 
 **Product Page**  
-![Product Page](screenshots/product.png)
+![Product Page](screenshot/product.png)
 
 **Category Page**  
-![Category Page](screenshots/category.png)
+![Category Page](screenshot/category.png)
 
 **Product in each Category Page**  
-![Product in each Category Page](screenshots/product-in-cloth-category.png)
+![Product in each Category Page](screenshot/product-in-cloth-category.png)
 
 **New Order Page**  
-![New Order Page](screenshots/new-order.png)
+![New Order Page](screenshot/new-order.png)
 
 **Customers Page**  
-![Customers Page](screenshots/customers.png)
+![Customers Page](screenshot/customers.png)
 
 **Employees Page**  
-![Employees Page](screenshots/employees.png)
+![Employees Page](screenshot/employees.png)
 
 **Report Page**  
-![Report Page](screenshots/report1.png)  
-![Report Page](screenshots/report2.png)  
-![Report Page](screenshots/report3.png)
+![Report Page](screenshot/report1.png)  
+![Report Page](screenshot/report2.png)  
+![Report Page](screenshot/report3.png)
