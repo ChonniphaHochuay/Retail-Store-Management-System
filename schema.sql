@@ -66,3 +66,15 @@ CREATE TABLE IF NOT EXISTS SalesReports (
     trend_percentage DECIMAL(5, 2),
     FOREIGN KEY (report_date) REFERENCES Orders(order_date)
 );
+
+--8.Product Review
+CREATE TABLE ProductReviews (
+    review_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT,
+    customer_id INT,
+    rating INT,
+    review_text TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
