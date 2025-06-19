@@ -100,6 +100,7 @@ retail_store_project/
 ![Structure Page](screenshot/structure.png)
 
 **Admin View**
+
 **Login Page**  
 ![Login Page](screenshot/login.png)
 
@@ -136,6 +137,7 @@ retail_store_project/
 ![Report Page](screenshot/report3.png)
 
 **Customer view**
+
 **Home Page**
 ![Home Page](screenshot/homepage-customer.png)  
 
