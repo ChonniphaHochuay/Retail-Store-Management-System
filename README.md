@@ -96,9 +96,10 @@ retail_store_project/
 ├── venv/
 ├── README.md
 └── screenshot/
+
 ![Structure Page](screenshot/structure.png)
 
-
+**Admin View**
 **Login Page**  
 ![Login Page](screenshot/login.png)
 
@@ -133,3 +134,19 @@ retail_store_project/
 ![Report Page](screenshot/report1.png)  
 ![Report Page](screenshot/report2.png)  
 ![Report Page](screenshot/report3.png)
+
+**Customer view**
+**Home Page**
+![Home Page](screenshot/homepage-customer.png)  
+
+**Product Page**
+![Product Page](screenshot/product-customer.png)  
+
+**Category Page**
+![Category Page](screenshot/category-customer.png)  
+
+**New Order Page**  
+![New Order Page](screenshot/new-order.png)
+
+
+
