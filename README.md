@@ -83,7 +83,7 @@ retail_store_project/
 ├── config.py
 ├── schema.sql
 ├── static/
-│ ├── images/
+│ ├── uploads/
 │ │ ├── t-shirt.jpg
 │ │ ├── socks.jpg
 │ │ └── hoodie.jpg
