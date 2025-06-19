@@ -83,51 +83,45 @@ retail_store_project/
 ├── config.py
 ├── schema.sql
 ├── static/
-│   ├── images/
-│   ├── uploads/
-│   │   ├── t-shirt.jpg
-│   │   ├── socks.jpg
-│   │   ├── hoodie.jpg
-│   │   └── ...
-│   └── style.css
+│ ├── images/
+│ │ ├── t-shirt.jpg
+│ │ ├── socks.jpg
+│ │ └── hoodie.jpg
+│ └── style.css
 ├── templates/
-│   ├── add_category.html
-│   ├── add_product.html
-│   └── products.html
-│   └── ...
+│ ├── add_category.html
+│ ├── add_product.html
+│ ├── products.html
+│ └── ...
 ├── venv/
-└── README.md
-└── screenshot
+├── README.md
+└── screenshot/
 
-**Login Page**
+**Login Page**  
 ![Login Page](screenshots/login.png)
 
-**Home Page**
+**Home Page**  
 ![Home Page](screenshots/homepage.png)
 
-**Product Page**
+**Product Page**  
 ![Product Page](screenshots/product.png)
 
-**Category Page**
+**Category Page**  
 ![Category Page](screenshots/category.png)
 
-**Product in each Category**
+**Product in each Category Page**  
 ![Product in each Category Page](screenshots/product-in-cloth-category.png)
 
-**New Order Page**
+**New Order Page**  
 ![New Order Page](screenshots/new-order.png)
 
-**Customers Page**
+**Customers Page**  
 ![Customers Page](screenshots/customers.png)
 
-**Employees Page**
+**Employees Page**  
 ![Employees Page](screenshots/employees.png)
 
-**Report Page**
-![Report Page](screenshots/report1.png)
-![Report Page](screenshots/report2.png)
+**Report Page**  
+![Report Page](screenshots/report1.png)  
+![Report Page](screenshots/report2.png)  
 ![Report Page](screenshots/report3.png)
-
-
-
-
