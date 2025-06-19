@@ -108,6 +108,9 @@ retail_store_project/
 **Product Page**  
 ![Product Page](screenshot/product.png)
 
+**Add Product Page**
+![Add Product Page](screenshot/add-product.png)
+
 **Category Page**  
 ![Category Page](screenshot/category.png)
 
@@ -122,6 +125,9 @@ retail_store_project/
 
 **Employees Page**  
 ![Employees Page](screenshot/employees.png)
+
+**Add Employee Page**
+![Add Employee Page](screenshot/add-employee.png)
 
 **Report Page**  
 ![Report Page](screenshot/report1.png)  

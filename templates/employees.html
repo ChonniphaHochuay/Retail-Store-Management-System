@@ -24,6 +24,7 @@
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
+            margin-top: 40px
         }
 
         .employee-card {
@@ -93,6 +94,8 @@
 <body>
 
     <h1>Employee Management</h1>
+
+    <a href="{{ url_for('add_employee') }}" class="btn btn-primary">+ Add Employee</a>
 
     <div class="employee-container">
         {% for employee in employees %}

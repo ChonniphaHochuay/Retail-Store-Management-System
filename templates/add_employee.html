@@ -1,13 +1,124 @@
-<h1>Add New Employee</h1>
-<form method="POST">
-    <label>Name:</label> <input type="text" name="name" required><br>
-    <label>Email:</label> <input type="email" name="email" required><br>
-    <label>Role:</label>
-    <select name="role">
-        <option value="admin">Admin</option>
-        <option value="staff">Staff</option>
-    </select><br>
-    <label>Password:</label> <input type="password" name="password" required><br>
-    <input type="submit" value="Add Employee">
-</form>
-<a href="{{ url_for('view_employees') }}">Back</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Employee</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            padding: 40px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #0b517f;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1rem;
+            color: #34495e;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Link and Back Button Styles */
+        a.back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+            color: #2980b9;
+            text-decoration: none;
+        }
+
+        a.back-btn:hover {
+            text-decoration: underline;
+        }  
+
+        
+    </style>
+</head>
+<body>
+    <h1>Add Employee</h1>
+
+    <div class="container">
+        <form method="POST" action="{{ url_for('add_employee') }}">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter Name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter Email" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <select id="role" name="role">
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter Password" required>
+            </div>
+            <button type="submit" class="btn-primary">Add Employee</button>
+        </form>
+        <a href="{{ url_for('view_employees') }}" class="back-btn">Back</a>
+    </div>
+</body>
+</html>
