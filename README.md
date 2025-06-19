@@ -145,7 +145,10 @@ retail_store_project/
 ![Product Page](screenshot/product-customer.png)  
 
 **Category Page**
-![Category Page](screenshot/category-customer.png)  
+![Category Page](screenshot/category-customer.png)
+
+**Product in each Category Page**  
+![Product in each Category Page](screenshot/product-in-food-customer.png)
 
 **New Order Page**  
 ![New Order Page](screenshot/new-order.png)
