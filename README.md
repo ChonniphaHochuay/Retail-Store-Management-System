@@ -96,6 +96,8 @@ retail_store_project/
 ├── venv/
 ├── README.md
 └── screenshot/
+![Structure Page](screenshot/structure.png)
+
 
 **Login Page**  
 ![Login Page](screenshot/login.png)
