@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS Products (
     price DECIMAL(10, 2),
     quantity INT,
     category_id INT,
+    image_path VARCHAR(255),
     FOREIGN KEY (category_id) REFERENCES ProductCategories(category_id)
 );
 
@@ -56,3 +57,11 @@ CREATE TABLE IF NOT EXISTS OrderDetails (
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
+CREATE TABLE IF NOT EXISTS SalesReports (
+    report_id INT AUTO_INCREMENT PRIMARY KEY,
+    report_date DATE,
+    total_sales DECIMAL(10, 2),
+    total_orders INT,
+    trend_percentage DECIMAL(5, 2),
+    FOREIGN KEY (report_date) REFERENCES Orders(order_date)
+);

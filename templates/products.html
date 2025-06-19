@@ -25,6 +25,35 @@
             margin-bottom: 20px;
         }
 
+        /* Blue Navbar Style */
+        nav {
+            background-color: #007bff;
+            padding: 10px 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: space-around;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            padding: 10px 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav ul li a:hover {
+            background-color: #0056b3;
+            padding: 5px 10px;
+        }
+
         .category-tab {
             display: flex;
             gap: 20px;
@@ -159,6 +188,7 @@
     </style>
 </head>
 <body>
+    
     <h1>Product List</h1>
 
     {% if session.get('role') == 'admin' %}
@@ -176,6 +206,13 @@
     <div class="grid-container">
         {% for product in products %}
         <div class="product-card">
+
+            {% if product.image %}
+              <img src="{{ url_for('static', filename='uploads/' + product.image) }}" alt="{{ product.name }}">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="No image">
+            {% endif %}
+
 
             <h4>{{ product.name }}</h4>
             <p>{{ product.description }}</p >

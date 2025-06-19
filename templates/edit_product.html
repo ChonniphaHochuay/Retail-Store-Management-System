@@ -19,6 +19,15 @@
             {% endfor %}
         </select><br>
 
+        <!-- Image upload section -->
+        <label>Image:</label><br>
+        {% if product.image_path %}
+            <img src="{{ url_for('static', filename='uploads/' + product.image_path) }}" width="100" alt="Product Image"><br>
+            <label>Change Image:</label><input type="file" name="image"><br>
+        {% else %}
+            <label>Upload Image:</label><input type="file" name="image"><br>
+        {% endif %}
+
         <input type="submit" value="Update">
     </form>
     <a href="{{ url_for('view_products') }}">Back to Products</a>

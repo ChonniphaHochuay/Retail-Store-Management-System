@@ -125,6 +125,11 @@ def view_products():
     products = cursor.fetchall()
     cursor.close()
     conn.close()
+
+    # Debugging: print the image paths
+    for product in products:
+        print(f"Product: {product['name']} - Image Path: {product['image_path']}")
+
     return render_template('products.html', products=products)
 
 @app.route('/product/add', methods=['GET', 'POST'])
@@ -144,7 +149,7 @@ def add_product():
         if image and image.filename != '':
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            image_path = f'static/uploads/{filename}'
+            image_path = os.path.join('static', 'uploads', filename)
         else:
             image_path = None
 
@@ -184,7 +189,7 @@ def edit_product(product_id):
         if image and image.filename:
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            image_path = f'static/uploads/{filename}'
+            image_path = os.path.join('static', 'uploads', filename)
         else:
             image_path = request.form.get('existing_image')
         

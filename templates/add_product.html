@@ -15,6 +15,10 @@
       {% for category in categories %}
         <option value="{{ category['category_id'] }}">{{ category['name'] }}</option>
       {% endfor %}
+    </select><br>
+
+    <!-- Image upload section -->
+    <label>Upload Image:</label><input type="file" name="image"><br>
 
     <input type="submit" value="Add">
 </form>
