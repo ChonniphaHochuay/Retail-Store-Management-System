@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Employees (
 );
 
 
--- 5. Products
+-- 4. Products
 CREATE TABLE IF NOT EXISTS Products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS Products (
     FOREIGN KEY (category_id) REFERENCES ProductCategories(category_id)
 );
 
--- 6. Orders
+-- 5. Orders
 CREATE TABLE IF NOT EXISTS Orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Orders (
     FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
 );
 
--- 7. OrderDetails
+-- 6. OrderDetails
 CREATE TABLE IF NOT EXISTS OrderDetails (
     order_detail_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS OrderDetails (
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
+--7. Sales report
 CREATE TABLE IF NOT EXISTS SalesReports (
     report_id INT AUTO_INCREMENT PRIMARY KEY,
     report_date DATE,
