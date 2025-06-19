@@ -141,6 +141,72 @@
             margin-bottom: 15px;
         }
 
+        .review-container {
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .review-container h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .review-container form {
+            margin-bottom: 20px;
+        }
+
+        .review-container input,
+        .review-container textarea {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .review-container .submit-btn {
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .review-container .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .reviews-list {
+            margin-top: 10px;
+        }
+
+        .reviews-list .review-item {
+            padding: 8px;
+            background-color: #ecf0f1;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .reviews-list .review-item strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .reviews-list .review-item p {
+            margin-top: 5px;
+            font-size: 1rem;
+        }
+
         .actions {
             display: flex;
             justify-content: space-between;
@@ -203,7 +269,6 @@
         </form>
     </div>
 
-    
     <div class="grid-container">
         {% for product in products %}
         <div class="product-card">
@@ -218,21 +283,26 @@
             <h4>{{ product.name }}</h4>
             <p>{{ product.description }}</p >
             <strong>{{ product.price }} ¥</strong>
+
+            <!-- Link to Product Reviews -->
+            <div class="reviews-list">
+                <a href="{{ url_for('view_product_reviews', product_id=product.product_id) }}">View Customer Reviews</a>
+            </div>
+
             <div class="actions">
                 {% if session.get('role') == 'admin' %}
-                    <a href="{{ url_for('edit_product', product_id=product.product_id) }}" class="edit">Edit</a > 
-                    <a href="{{ url_for('delete_product', product_id=product.product_id) }}" class="delete">Delete</a >
+                    <a href="{{ url_for('edit_product', product_id=product.product_id) }}" class="edit">Edit</a>
+                    <a href="{{ url_for('delete_product', product_id=product.product_id) }}" class="delete">Delete</a>
                 {% endif %}
             </div>
         </div>
         {% endfor %}
     </div>
 
-
     <h2>
         {% if category_name %}
             Products in "{{ category_name }}"
-            <a href="{{ url_for('view_products') }}" class="back-btn">← Back to All Products</a >
+            <a href="{{ url_for('view_products') }}" class="back-btn">← Back to All Products</a>
         {% else %}
             All Products
         {% endif %}

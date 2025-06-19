@@ -110,6 +110,9 @@ retail_store_project/
 **Product Page**  
 ![Product Page](screenshot/product.png)
 
+**Review Product Page**
+![Review Product Page](screenshot/product-review.png)
+
 **Add Product Page**
 ![Add Product Page](screenshot/add-product.png)
 
@@ -143,6 +146,9 @@ retail_store_project/
 
 **Product Page**
 ![Product Page](screenshot/product-customer.png)  
+
+**Review Product Page**
+![Review Product Page](screenshot/product-review.png)
 
 **Category Page**
 ![Category Page](screenshot/category-customer.png)

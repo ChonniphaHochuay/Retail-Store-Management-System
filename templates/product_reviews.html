@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - Customer Reviews</title>
+    <style>
+        /* Add your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #0b517f;
+            margin-bottom: 20px;
+        }
+
+        .review-container {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .review-container h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .review-container form {
+            margin-bottom: 20px;
+        }
+
+        .review-container input,
+        .review-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .review-container .submit-btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .review-container .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .reviews-list {
+            margin-top: 20px;
+        }
+
+        .reviews-list .review-item {
+            padding: 10px;
+            background-color: #ecf0f1;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .reviews-list .review-item strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .reviews-list .review-item p {
+            margin-top: 5px;
+            font-size: 1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            color: #34495e;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>{{ product.name }} - Customer Reviews</h1>
+
+    <!-- Add Review Form -->
+    {% if session.get('role') %}
+        <div class="review-container">
+            <h3>Write a Review</h3>
+            <form action="{{ url_for('add_review', product_id=product.product_id) }}" method="POST">
+                <label for="rating">Rating (1 to 5):</label>
+                <input type="number" name="rating" min="1" max="5" required><br>
+
+                <label for="review_text">Review:</label>
+                <textarea name="review_text" required></textarea><br>
+
+                <input type="submit" class="submit-btn" value="Submit Review">
+            </form>
+        </div>
+    {% else %}
+        <p>Please log in to write a review.</p>
+    {% endif %}
+
+    <!-- Display Reviews -->
+    <div class="reviews-list">
+        <h3>Customer Reviews</h3>
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review-item">
+                    <strong>Rating: {{ review.rating }} / 5</strong>
+                    <p>{{ review.review_text }}</p>
+                    <small>By Customer {{ review.customer_id }} on {{ review.created_at }}</small>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No reviews yet for this product.</p>
+        {% endif %}
+    </div>
+
+    <a href="{{ url_for('view_products') }}" class="back-btn">Back to Products</a>
+
+</body>
+</html>

@@ -132,6 +132,124 @@ def view_products():
 
     return render_template('products.html', products=products)
 
+@app.route('/product/<int:product_id>', methods=['GET', 'POST'])
+def product_page(product_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    # Get product details
+    cursor.execute("SELECT * FROM Products WHERE product_id = %s", (product_id,))
+    product = cursor.fetchone()
+
+    if not product:
+        flash("Product not found.")
+        return redirect(url_for('view_products'))
+
+    # Get reviews for the product
+    cursor.execute("SELECT * FROM ProductReviews WHERE product_id = %s", (product_id,))
+    reviews = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('product_page.html', product=product, reviews=reviews)
+
+@app.route('/product/review/<int:product_id>', methods=['GET', 'POST'])
+def product_review(product_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Fetch product and reviews
+    cursor.execute("SELECT * FROM Products WHERE product_id = %s", (product_id,))
+    product = cursor.fetchone()
+
+    cursor.execute("SELECT * FROM ProductReviews WHERE product_id = %s", (product_id,))
+    reviews = cursor.fetchall()  # Ensure reviews is a list, even if empty
+
+    conn.close()
+
+    if request.method == 'POST':
+        # Handle review submission
+        rating = request.form['rating']
+        review_text = request.form['review_text']
+        customer_id = session.get('user_id')
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO ProductReviews (product_id, customer_id, rating, review_text) 
+            VALUES (%s, %s, %s, %s)
+        """, (product_id, customer_id, rating, review_text))
+        conn.commit()
+        conn.close()
+
+        flash('Review submitted successfully!')
+        return redirect(url_for('product_review', product_id=product_id))
+
+    return render_template('product_reviews.html', product=product, reviews=reviews)
+
+
+@app.route('/product/review/<int:product_id>', methods=['POST'])
+@login_required
+def add_review(product_id):
+    if request.method == 'POST':
+        rating = request.form['rating']
+        review_text = request.form['review_text']
+        customer_id = session.get('user_id')
+
+        if not rating or not review_text:
+            flash('Please provide a rating and review text.')
+            return redirect(url_for('product_page', product_id=product_id))
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO ProductReviews (product_id, customer_id, rating, review_text)
+            VALUES (%s, %s, %s, %s)
+        """, (product_id, customer_id, rating, review_text))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        flash("Review added successfully!")
+        return redirect(url_for('product_page', product_id=product_id))
+
+@app.route('/product/review/<int:product_id>', methods=['GET', 'POST'])
+def view_product_reviews(product_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Fetch product details
+    cursor.execute("SELECT * FROM Products WHERE product_id = %s", (product_id,))
+    product = cursor.fetchone()
+
+    # Fetch reviews for the product
+    cursor.execute("SELECT * FROM ProductReviews WHERE product_id = %s", (product_id,))
+    reviews = cursor.fetchall()
+
+    if request.method == 'POST':
+        # Get form data for review
+        rating = request.form['rating']
+        review_text = request.form['review_text']
+        customer_id = session.get('user_id')
+
+        # Insert the review into the database
+        cursor.execute("""
+            INSERT INTO ProductReviews (product_id, customer_id, rating, review_text)
+            VALUES (%s, %s, %s, %s)
+        """, (product_id, customer_id, rating, review_text))
+        conn.commit()
+
+        flash("Your review has been submitted successfully.")
+        return redirect(url_for('view_product_reviews', product_id=product_id))
+
+    conn.close()
+    return render_template('product_reviews.html', product=product, reviews=reviews)
+
+
+
 @app.route('/product/add', methods=['GET', 'POST'])
 @admin_required
 def add_product():
