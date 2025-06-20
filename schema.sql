@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS OrderDetails (
 --7. Sales report
 CREATE TABLE IF NOT EXISTS SalesReports (
     report_id INT AUTO_INCREMENT PRIMARY KEY,
-    report_datetime DATE,
+    report_date DATETIME,
     total_sales DECIMAL(10, 2),
     total_orders INT,
     trend_percentage DECIMAL(5, 2),
